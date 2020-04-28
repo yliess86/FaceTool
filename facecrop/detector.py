@@ -4,6 +4,8 @@
 The file provides a face detector and outputs boxes given frames.
 Their should be only one face per frame.
 If multiple are present, the boxer will return None for the given frame.
+The library used implements the following MTCNN paper:
+    https://arxiv.org/pdf/1604.02878.pdf
 """
 from facenet_pytorch import MTCNN
 from typing import Iterable
@@ -16,6 +18,8 @@ class FaceDetector:
 
     Face Detector is a Wrapper for the MTCNN pytorch model to allow one face
     detection only returns one box per frame.
+    MTCNN paper:
+        https://arxiv.org/pdf/1604.02878.pdf
 
     Attributes:
         mtcnn {MTCNN} -- pytorch face detection model
