@@ -64,11 +64,12 @@ This section display the **annotation format** resulting from the inference. The
 * **mark_[i]_[x/y] {float}** - landmark id i, x or y component of the face
 * **frame_w {int}** - frame size width (resized when processed)
 * **frame_h {int}** - frame size height (resized when processed)
+* **sequence {int}** - sequence assignement (new seq when zero or more than one detection)
 
-|time|    x|    y| box_size|mark_[i]_x|mark_[i]_y|frame_w|frame_h|
-|---:|----:|----:|--------:|---------:|---------:|------:|------:|
-|0.16|325.0|500.0|    230.0|     400.0|     528.0|   1280|    720|
-| ...|  ...|  ...|      ...|       ...|       ...|    ...|    ...|
+|time|    x|    y| box_size|mark_[i]_x|mark_[i]_y|frame_w|frame_h|sequence|
+|---:|----:|----:|--------:|---------:|---------:|------:|------:|-------:|
+|0.16|325.0|500.0|    230.0|     400.0|     528.0|   1280|    720|       1|
+| ...|  ...|  ...|      ...|       ...|       ...|    ...|    ...|     ...|
 
 ## References
 
