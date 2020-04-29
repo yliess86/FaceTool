@@ -40,7 +40,7 @@ The **FaceCrop tools** can be accessed directly with the following command:
 $ python3 -m facecrop --help 
 usage: facecrop [-h] --video_path VIDEO_PATH --annot_path ANNOT_PATH
 [--video_size VIDEO_SIZE VIDEO_SIZE] [--batch_size BATCH_SIZE]
-[--max_batch MAX_BATCH] [--device DEVICE] [-v] [-c]
+[--max_batch MAX_BATCH] [--device DEVICE] [-v] [-c] [-s]
 ```
 
 |Argument  |Type |Number|Default  |Description                          |
@@ -53,6 +53,7 @@ usage: facecrop [-h] --video_path VIDEO_PATH --annot_path ANNOT_PATH
 |device    |str  |     1|      cpu|Device to run the inference on "cuda"|
 |visualize |bool |     1|    False|Visualize the annotations            |
 |crop      |bool |     1|    False|Crop the face when visualizing       |
+|save      |bool |     1|    False|Save the visualization to GIF        |
 
 ## Annotations
 

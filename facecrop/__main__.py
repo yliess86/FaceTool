@@ -29,6 +29,7 @@ parser.add_argument("--device",     type=str,  default="cpu")
 
 parser.add_argument("-v", "--visualize", action="store_true")
 parser.add_argument("-c", "--crop",      action="store_true")
+parser.add_argument("-s", "--save",      action="store_true")
 
 args = parser.parse_args()
 
@@ -41,8 +42,9 @@ if not os.path.isfile(args.annot_path):
     annot.to_csv(args.annot_path)
 
 if args.visualize:
-    extension = args.video_path.split(".")[-1]
     path = args.video_path.replace(f".{extension}", ".gif")
+    path = path if args.save else None
+    extension = args.video_path.split(".")[-1]
     FaceVisualizer.visualize(
         args.video_path, args.annot_path, args.crop, save=path
     )
