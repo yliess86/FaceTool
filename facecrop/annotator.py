@@ -80,7 +80,8 @@ class FaceAnnotator:
 
     def __call__(
         self, path: str, batch_size: int,
-        n: int = 24, overshoot: float = 1.2, max_batch: int = None
+        n: int = 24, overshoot: float = 1.2,
+        max_batch: int = None, min_seq: float = 2.0
     ) -> pd.DataFrame:
         """Call
 
@@ -92,6 +93,8 @@ class FaceAnnotator:
             n {int} -- number of frame used for smoothing (default: {24})
             max_batch {int} -- max batch number to process (default: {None})
                 usefull for testing
+            min_seq {int} -- min amount of seconds to accept a sequence
+                (default: {2.0})
 
         Returns:
             pd.DataFrame -- annotations
@@ -101,9 +104,10 @@ class FaceAnnotator:
         if max_batch:
             n_batch = min(n_batch, max_batch)
 
+        min_seq = int(np.floor(min_seq * video.fps))
         with video as v:
             df = self._process_boxes(v, n_batch, batch_size)
-        df = self._classify_boxes(df)
+        df = self._classify_boxes(df, min_seq)
         df = self._transform_boxes(df, dt)
         df = self._clean_boxes(df)
         df = self._unify_boxes(df, overshoot)
@@ -171,13 +175,16 @@ class FaceAnnotator:
         gaussian = lambda n: c * np.exp(-0.5 * np.linspace(-4, 4, n) ** 2)
 
         def smooth(array: np.ndarray) -> np.ndarray:
-            return np.convolve(array, gaussian(n), 'same') / n
+            gauss = gaussian(n)
+            if len(array) <= len(gauss):
+                return array
+            return np.convolve(array, gauss, 'same') / n
             
         sequences = df.sequence.unique()
         for sequence in tqdm(sequences, desc="Smoothing Boxes"):
             df_sequence = df[df.sequence == sequence]
-            df_sequence.x = smooth(df_sequence.x)
-            df_sequence.y = smooth(df_sequence.y)
+            df_sequence["x"] = smooth(df_sequence.x)
+            df_sequence["y"] = smooth(df_sequence.y)
         return df
 
     def _unify_boxes(self, df: pd.DataFrame, overshoot: float) -> pd.DataFrame:
@@ -223,7 +230,9 @@ class FaceAnnotator:
         df.dropna(inplace=True)
         return df
 
-    def _classify_boxes(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _classify_boxes(
+        self, df: pd.DataFrame, min_seq: int
+    ) -> pd.DataFrame:
         """Assign sequences"""
         seq = 0
         last = None
@@ -235,6 +244,12 @@ class FaceAnnotator:
             last = current
             sequences.append(seq)
         df["sequence"] = sequences
+
+        df = df.groupby("sequence").filter(lambda x: len(x) > min_seq)
+        sequences = df.sequence.unique()
+        mapping = {sequence: i for i, sequence in enumerate(sequences)}
+        df.replace({"sequence": mapping}, inplace=True)
+
         return df
 
     def _transform_boxes(self, df: pd.DataFrame, dt: float) -> pd.DataFrame:

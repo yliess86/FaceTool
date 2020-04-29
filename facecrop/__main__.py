@@ -22,10 +22,11 @@ parser = ArgumentParser()
 parser.add_argument("--video_path", type=str, required=True)
 parser.add_argument("--annot_path", type=str, required=True)
 
-parser.add_argument("--video_size", type=size, default="1280, 720", nargs=2)
-parser.add_argument("--batch_size", type=int,  default=16)
-parser.add_argument("--max_batch",  type=int,  default=None)
-parser.add_argument("--device",     type=str,  default="cpu")
+parser.add_argument("--video_size", type=size,  default="1280, 720", nargs=2)
+parser.add_argument("--batch_size", type=int,   default=16)
+parser.add_argument("--max_batch",  type=int,   default=None)
+parser.add_argument("--device",     type=str,   default="cpu")
+parser.add_argument("--min_seq",    type=float, default=2.0)
 
 parser.add_argument("-v", "--visualize", action="store_true")
 parser.add_argument("-c", "--crop",      action="store_true")
@@ -37,14 +38,15 @@ print(f"==== {args.video_path}")
 if not os.path.isfile(args.annot_path):
     annotator = FaceAnnotator(args.video_size, args.device)
     annot = annotator(
-        args.video_path, args.batch_size, max_batch=args.max_batch
+        args.video_path, args.batch_size, 
+        max_batch=args.max_batch, min_seq=args.min_seq
     )
     annot.to_csv(args.annot_path)
 
 if args.visualize:
+    extension = args.video_path.split(".")[-1]
     path = args.video_path.replace(f".{extension}", ".gif")
     path = path if args.save else None
-    extension = args.video_path.split(".")[-1]
     FaceVisualizer.visualize(
         args.video_path, args.annot_path, args.crop, save=path
     )
