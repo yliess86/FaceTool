@@ -121,7 +121,7 @@ class FaceAnnotator:
     def _landmarks(
         self, df: pd.DataFrame, video: Video, batch_size: int, dt: float
     ) -> pd.DataFrame:
-        """Landmark detection @TODO: Batch system should depend on sequence"""
+        """Landmark detection per sequence in batch"""
         landmarks = []
         for sequence in tqdm(df.sequence.unique(), desc="Sequence"):
             df_sequence = df[df.sequence == sequence]
@@ -144,21 +144,18 @@ class FaceAnnotator:
                     frame = video[int(np.floor(row.time / dt))]
                     face_list.append(frame[y0:y1, x0:x1])
                     offsets.append([x0, y0])
+                offsets = np.array(offsets)
                 
                 # Make sure faces are the same size to process in batch
                 n_faces = len(face_list)
                 size = np.max([max(face.shape) for face in face_list])
                 faces = np.zeros((n_faces, size, size, 3), dtype=np.uint8)
-                offsets = np.array(offsets)
                 for i, face in enumerate(face_list):
-                    h, w, c = face.shape 
-                    faces[i, :h, :w, :c] = face[:, :, :]
+                    h, w, c = face.shape
+                    faces[i, :h, :w, :c] = face
                 
                 # Compute face landmarks
-                preds = self.landmarker(faces)
-                for n in range(preds.size(1)):
-                    preds[:, n, 0] += offsets[:, 0]
-                    preds[:, n, 1] += offsets[:, 1]
+                preds = self.landmarker(faces) + np.expand_dims(offsets, 1)
                 landmarks.append(preds)
         landmarks = np.concatenate(landmarks)
 
@@ -183,8 +180,8 @@ class FaceAnnotator:
         sequences = df.sequence.unique()
         for sequence in tqdm(sequences, desc="Smoothing Boxes"):
             df_sequence = df[df.sequence == sequence]
-            df_sequence["x"] = smooth(df_sequence.x)
-            df_sequence["y"] = smooth(df_sequence.y)
+            df.loc[df.sequence == sequence, "x"] = smooth(df_sequence["x"])
+            df.loc[df.sequence == sequence, "y"] = smooth(df_sequence["y"])
         return df
 
     def _unify_boxes(self, df: pd.DataFrame, overshoot: float) -> pd.DataFrame:
@@ -245,10 +242,11 @@ class FaceAnnotator:
             sequences.append(seq)
         df["sequence"] = sequences
 
+        # Remove useless sequences and rename labels by order
         df = df.groupby("sequence").filter(lambda x: len(x) > min_seq)
-        sequences = df.sequence.unique()
-        mapping = {sequence: i for i, sequence in enumerate(sequences)}
-        df.replace({"sequence": mapping}, inplace=True)
+        df.replace({"sequence": {
+            sequence: i for i, sequence in enumerate(df.sequence.unique())
+        }}, inplace=True)
 
         return df
 
