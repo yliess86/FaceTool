@@ -50,6 +50,10 @@ class FaceLandmarker:
     @torch.no_grad()
     def __call__(self, faces: np.ndarray) -> np.ndarray:
         """Compute 68 face landmarks given cropped faces: (B, N, 2)"""
+        def flip(tensor: torch.Tensor) -> torch.Tensor:
+            # Negative slicinf is not available yet
+            return torch.flip(tensor, dims=(-2, ))
+
         h, w, c = faces[0].shape
 
         faces = torch.stack([
@@ -57,7 +61,10 @@ class FaceLandmarker:
             for face in faces
         ]).to(self.device)
 
-        heatmaps = self.fan(faces)[-1]
+        # Flipped for redundancy. May increase stabilty.
+        heatmaps = self.fan(faces)[-1] + flip(self.fan(flip(faces))[-1])
+        heatmaps.mul_(0.5)
+
         B, N, W, H = heatmaps.size()
 
         preds = torch.argmax(heatmaps.view(B, N, W * H), -1)
