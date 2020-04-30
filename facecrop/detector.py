@@ -14,7 +14,6 @@ from tqdm import tqdm
 from torchvision.transforms import Compose
 from torchvision.transforms import Resize
 from torchvision.transforms import ToTensor
-from typing import Iterator
 from typing import Tuple
 
 import moviepy.editor as mpe
@@ -51,18 +50,16 @@ class FaceDetector:
         self.mtcnn = MTCNN(device=device)
         self.mtcnn.select_largest = True
 
-    def __call__(self, path: str) -> Iterator[np.ndarray]:
+    def __call__(self, path: str) -> np.ndarray:
         """Call
 
-        Compute the face boxe for each frame of a given video. Return an
-        iterator of size 'number of batches' to allow the addition of other
-        modules (such as landmark detection).
+        Compute the face boxe for each frame of a given video.
 
         Arguments:
             path {str} -- path to the video
 
-        Yields:
-            Iterator[np.ndarray] -- return batch inference of size [B, 5] where
+        Returns:
+            np.ndarray -- return batch inference of size [B, 5] where
                 5 correspond to [frame, x, y, w, h] of the box. If no box is
                 found, box is equal to [0, 0, 0, 0]. This is usefull to create
                 masks for further operations.
@@ -74,6 +71,7 @@ class FaceDetector:
         n_frames = int(np.floor(video.fps * video.duration))
         scale = video.w / self.size[0], video.h / self.size[1]
 
+        results = []
         iterator = range(0, n_frames, self.batch_size)
         for b in tqdm(iterator, desc="Face Detector"):
             # Get batch_size Frames and Detect Boxes
@@ -113,4 +111,6 @@ class FaceDetector:
             mask_size = (result[:, 3] != 0) & (result[:, 4] != 0)
             mask = mask_pos & mask_size
 
-            yield result[mask]
+            results.append(result[mask])
+
+        return np.concatenate(results)
