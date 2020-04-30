@@ -106,9 +106,9 @@ class FaceAnnotator:
 
         min_seq = int(np.floor(min_seq * video.fps))
         with video as v:
-            df = self._process_boxes(v, n_batch, batch_size)
+            df = self._process_boxes(v, n_batch, batch_size, dt)
         df = self._classify_boxes(df, min_seq)
-        df = self._transform_boxes(df, dt)
+        df = self._transform_boxes(df)
         df = self._clean_boxes(df)
         df = self._unify_boxes(df, overshoot)
         df = self._smooth_boxes(df, n)
@@ -179,9 +179,10 @@ class FaceAnnotator:
             
         sequences = df.sequence.unique()
         for sequence in tqdm(sequences, desc="Smoothing Boxes"):
-            df_sequence = df[df.sequence == sequence]
-            df.loc[df.sequence == sequence, "x"] = smooth(df_sequence["x"])
-            df.loc[df.sequence == sequence, "y"] = smooth(df_sequence["y"])
+            X = df.loc[df.sequence == sequence, "x"]
+            Y = df.loc[df.sequence == sequence, "y"]
+            X = smooth(X.array)
+            Y = smooth(Y.array)
         return df
 
     def _unify_boxes(self, df: pd.DataFrame, overshoot: float) -> pd.DataFrame:
@@ -204,13 +205,15 @@ class FaceAnnotator:
         return dt, n_batch
 
     def _process_boxes(
-        self, video: Iterator[np.ndarray], n_batch: int, batch_size: int
+        self, video: Iterator[np.ndarray], 
+        n_batch: int, batch_size: int, dt: float
     ) -> pd.DataFrame:
         """Process frames for boxing"""
         pbar = tqdm(range(n_batch), desc="Boxing Faces")
         df = pd.DataFrame({name: [] for name in self.names})
         dfs = [self._process_batch_boxes(video, batch_size) for _ in pbar]
         df = pd.concat(dfs, ignore_index=True)
+        df["time"] = np.arange(0, len(df)) * dt
         return df
 
     def _process_batch_boxes(
@@ -250,13 +253,12 @@ class FaceAnnotator:
 
         return df
 
-    def _transform_boxes(self, df: pd.DataFrame, dt: float) -> pd.DataFrame:
+    def _transform_boxes(self, df: pd.DataFrame) -> pd.DataFrame:
         """Compute position and size"""
         df["w"] = np.abs(df.x0 - df.x1)
         df["h"] = np.abs(df.y0 - df.y1)
         df["x"] = df.x0 + df.w * 0.5
         df["y"] = df.y0 + df.h * 0.5
-        df["time"] = np.arange(0, len(df)) * dt
         df["frame_w"] = [self.size[0]] * len(df)
         df["frame_h"] = [self.size[1]] * len(df)
         return df
