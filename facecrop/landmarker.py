@@ -37,7 +37,7 @@ class FaceLandmarker:
     def __init__(self, n_process: int, batch_size: int) -> None:
         self.n_process = n_process
         self.batch_size = batch_size
-        self.predictor = dlib.shape_predictor(self._predictor())
+        self.predictor = dlib.shape_predictor(self._predictor)
 
     @property
     def _predictor(self) -> str:
