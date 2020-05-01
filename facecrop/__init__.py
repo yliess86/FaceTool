@@ -3,3 +3,4 @@
 from facecrop.annotator import FaceAnnotator
 from facecrop.detector import FaceDetector
 from facecrop.landmarker import FaceLandmarker
+from facecrop.visualizer import FaceVisualizer

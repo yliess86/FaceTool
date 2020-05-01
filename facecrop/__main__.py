@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """facecrop.__main__"""
 from facecrop.annotator import FaceAnnotator
+from facecrop.visualizer import FaceVisualizer
 from typing import Tuple
 
 import argparse
@@ -49,6 +50,25 @@ annotate.add_argument(
     help="device to run detector on, `cpu` or `cuda`"
 )
 
+# Define Visualize Command Arguments
+visualize = sub_parsers.add_parser("visualize")
+visualize.add_argument(
+    "--video", type=str, required=True,
+    help="video path (mp4 by preference `video.mp4`)"
+)
+visualize.add_argument(
+    "--annotations", type=str, required=True,
+    help="annotations path (csv `annotations.csv`)"
+)
+visualize.add_argument(
+    "--save", type=str, default=None,
+    help="visualization saving path (gif `visualization.gif`)"
+)
+visualize.add_argument(
+    "--size", type=size, default="640, 360", nargs=2,
+    help="resize the video to save gif"
+)
+
 # Parse and Process Commands
 args = parser.parse_args()
 if args.action == "annotate":
@@ -60,3 +80,8 @@ if args.action == "annotate":
     # Annotate Video and Save DataFrame
     annotations = face_annotator(args.video)
     annotations.to_csv(args.annotations)
+
+elif args.action == "visualize":
+    FaceVisualizer.visualize(
+        args.video, args.annotations, save=args.save, size=args.size
+    )
