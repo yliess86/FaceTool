@@ -99,14 +99,13 @@ class FaceLandmarker:
         for b in tqdm(iterator, desc="Face Landmarker"):
             # Get batch_size Frames
             frames = list(islice(frame_iter, self.batch_size))
+            end = b + len(frames)
             
             # Select Accepted Frames
-            end = b + self.batch_size
             mask = (boxes[:, 0] >= b) & (boxes[:, 0] < end) # Accepted Mask
             idxs = boxes[mask, 0] - b                       # Accepted Indexes
-            frames = [frames[idx] for idx in idxs]          # Accepted Frames
             bboxes = boxes[mask]                            # Batch Boxes
-
+            
             def predict(box: np.ndarray) -> np.ndarray:
                 i, x, y, w, h = box                   # Box
                 x0, y0 = x - w // 2, y - w // 2       # Top Left Coords
@@ -129,6 +128,7 @@ class FaceLandmarker:
             with ThreadPool(self.n_process) as pool:
                 landmarks = np.array(list(pool.imap(predict, bboxes)))
             
-            results.append(landmarks)
+            if len(landmarks):
+                results.append(landmarks)
 
         return np.concatenate(results)
