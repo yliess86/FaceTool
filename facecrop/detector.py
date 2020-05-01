@@ -30,7 +30,7 @@ class FaceDetector:
         * Paper: https://arxiv.org/pdf/1604.02878.pdf
         * Implementation: https://github.com/timesler/facenet-pytorch
 
-    Output Format: [frame, x, y, w, h] instead of [x0, y0, x1, y1]
+    Output Format: [frame_idx, x, y, w, h] instead of [x0, y0, x1, y1]
 
     Arguments:
         device {str} -- device to run inference on ("cpu" or "cuda")
@@ -59,10 +59,9 @@ class FaceDetector:
             path {str} -- path to the video
 
         Returns:
-            np.ndarray -- return batch inference of size [B, 5] where
-                5 correspond to [frame, x, y, w, h] of the box. If no box is
-                found, box is equal to [0, 0, 0, 0]. This is usefull to create
-                masks for further operations.
+            np.ndarray -- array of size [N, 5] where N is the amount of valid
+                frames (frame with detected face) and 5 correspond to
+                [frame_idx, x, y, w, h] of the box.
         """
         video = mpe.VideoFileClip(path)
         frame_iter = video.iter_frames()
