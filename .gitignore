@@ -141,6 +141,7 @@ cython_debug/
 # Vscode
 .vscode/
 
-# Data
+# Data and Model
 *.mp4
 *.csv
+facecrop/model
