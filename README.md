@@ -19,7 +19,7 @@
 </p>
 <p align="center">
     <a href="https://www.youtube.com/watch?v=uxRf7KS3abo">
-        Orinal Video
+        Orignal Video
     </a>
 </p>
 
