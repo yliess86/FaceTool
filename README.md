@@ -16,4 +16,5 @@
 **FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region** and **landmarks** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate dataset for training Deep Learning models and such.
 
 [Original Video](https://www.youtube.com/watch?v=uxRf7KS3abo)
+
 ![Joma](joma.gif)
