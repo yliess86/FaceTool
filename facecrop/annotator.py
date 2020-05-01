@@ -71,7 +71,7 @@ class FaceAnnotator:
         lname = lambda j, k: f"landmark_{j + 1}_{lpos(k)}"
 
         # Landmarks Column Names
-        names = ["time", "box_x", "box_y", "box_w", "bow_h"]
+        names = ["frame_idx", "box_x", "box_y", "box_w", "box_h"]
         names += [lname(j, k) for j in range(L) for k in range(P)]
 
         # Create DataFrame
