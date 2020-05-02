@@ -45,7 +45,7 @@ def shape_predictor() -> str:
 dat_file = shape_predictor()
 
 desciption = ( 
-    f"FaceCrop: a Tool for Face Cropped Videos"
+    f"FaceTool: a Tool for Single Face Videos"
 )
 
 with open('requirements.txt') as fh:
@@ -55,21 +55,21 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="facecrop",
+    name="facetool",
     version=__version__,
     author="Yliess HATI",
     author_email="hatiyliess86@gmail.com",
     description=desciption,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yliess86/FaceCrop",
+    url="https://github.com/yliess86/FaceTool",
     python_requires=">=3.6",
     install_requires=requirements,
     packages=find_packages(),
     include_package_data=True,
     data_files=[
-        (os.path.join(sys.prefix, "facecrop", "model"), [dat_file])
-        (os.path.join(sys.prefix, "facecrop", "model"), ["masknet.pt"])
+        (os.path.join(sys.prefix, "facetool", "model"), [dat_file])
+        (os.path.join(sys.prefix, "facetool", "model"), ["masknet.pt"])
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

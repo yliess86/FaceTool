@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""facecrop.detector
+"""facetool.detector
 
 The file provides a multi stage face detector to output a face box for given
 frames. The process takes advantage of the GPU and Batch Inference.

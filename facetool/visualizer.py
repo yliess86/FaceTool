@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""facecrop.visualizer
+"""facetool.visualizer
 
 The file provides a visualizarion tool to produce detection and landmark 
 visualization clip from a given video and annotation file.

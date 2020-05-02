@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""facecrop.landmarker
+"""facetool.landmarker
 
 The file provides a wrapper to apply dlib 68 facial landmark detection
 on multiple frames while taking advantage of threading to make faster
@@ -41,7 +41,7 @@ class FaceLandmarker:
     def _predictor(self) -> str:
         """Dlib Predictor Weights File Path"""
         return pr.resource_filename(
-            "facecrop", "model/shape_predictor_68_face_landmarks.dat"
+            "facetool", "model/shape_predictor_68_face_landmarks.dat"
         )
 
 

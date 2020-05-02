@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""facecrop.masker
+"""facetool.masker
 
 The file provides a wrapper for a segmentation mask model. The mode segments
 humans present on the frame and provides a mask to retrieve the person and thus
@@ -103,7 +103,7 @@ class BackgroundMasker:
     @property
     def _model(self) -> str:
         """Return the model path"""
-        return pr.resource_filename("facecrop", "model/masknet.pt")
+        return pr.resource_filename("facetool", "model/masknet.pt")
 
     def __call__(self, path: str, dest: str) -> None:
         """Generate Mask for a given Video and Produce a Mask mp4 Clip"""

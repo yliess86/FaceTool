@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""facecrop.__main__"""
-from facecrop.annotator import FaceAnnotator
-from facecrop.masker import BackgroundMasker
-from facecrop.visualizer import FaceVisualizer
+"""facetool.__main__"""
+from facetool.annotator import FaceAnnotator
+from facetool.masker import BackgroundMasker
+from facetool.visualizer import FaceVisualizer
 from typing import Tuple
 
 import argparse

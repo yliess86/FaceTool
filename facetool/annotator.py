@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""facecrop.annotator
+"""facetool.annotator
 
 The files provides a Face Annotator in charge of combining the result of the
 Face Detector and Face Landmark in a single pandas DataFrame. This Face
 Annotator is the API built to be used by the end user. 
 """
-from facecrop.detector import FaceDetector
-from facecrop.landmarker import FaceLandmarker
+from facetool.detector import FaceDetector
+from facetool.landmarker import FaceLandmarker
 from tqdm import tqdm
 from typing import Tuple
 

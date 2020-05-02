@@ -1,8 +1,8 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/yliess86/FaceCrop/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/yliess86/FaceTool/blob/master/LICENSE)
 [![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Pytorch 1.4](https://img.shields.io/badge/pytorch-1.4.0-blue.svg)](https://pytorch.org/)
 
-# FaceCrop: a Tool for Face Cropped Videos
+# FaceTool: a Tool for Single Face Videos
 
 ![Logo](logo.png)
 
@@ -10,9 +10,9 @@
 >
 > This tool is **not meant** to be used for **real-time** landmark and face detection. Other tools such as OpenPose, OpenCV, and optimized Dlib already allow you to do so.
 >
-> This tool has been built to **meet the needs I have at the moment** of creating it for other and more complex projects. FaceCrop is meant to be used with single person videos exclusively. It **isn't perfect** and **will be updated as needed**.
+> This tool has been built to **meet the needs I have at the moment** of creating it for other and more complex projects. FaceTool is meant to be used with single person videos exclusively. It **isn't perfect** and **will be updated as needed**.
 
-**FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks** and **segmentation mask** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
+**FaceTool** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks** and **segmentation mask** from **single person videos**. FaceTool has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
 
 <p align="center">
   <img width="640" height="360" src="joma.gif"></img>
@@ -33,7 +33,7 @@ $ (sudo) python3 setup.py install
 
 ## Usage
 
-After installation, the **FaceCrop** can perform three actions: **Create annotation CSV** file for a given video, **Visualize** annotation for a given video and its annotation file, and produce **Human Masking** as an **MP4** clip.
+After installation, the **FaceTool** can perform three actions: **Create annotation CSV** file for a given video, **Visualize** annotation for a given video and its annotation file, and produce **Human Masking** as an **MP4** clip.
 
 > #### Tips
 >
@@ -44,7 +44,7 @@ After installation, the **FaceCrop** can perform three actions: **Create annotat
 The **annotation** command is in the following format:
 
 ```bash
-$ python3 -m facecrop annotate --help
+$ python3 -m facetool annotate --help
 usage: __main__.py annotate [-h] --video VIDEO --annotations ANNOTATIONS
 --dbatch_size DBATCH_SIZE --lbatch_size LBATCH_SIZE --n_process N_PROCESS
 [--size SIZE SIZE] [-d DEVICE]
@@ -72,7 +72,7 @@ The **naming convention** is explicit. `frame_idx` corresponds to the frame id i
 The **visualization** command is in the following format:
 
 ```bash
-$ python3 -m facecrop visualize --help
+$ python3 -m facetool visualize --help
 usage: __main__.py visualize [-h] --video VIDEO --annotations ANNOTATIONS
 [--save SAVE] [--size SIZE SIZE]
 
@@ -90,7 +90,7 @@ The visualization will **display the processed frames** as the example displayed
 
 The **segmentation** command is in the following format:
 ```bash
-$ python3 -m facecrop mask --help
+$ python3 -m facetool mask --help
 usage: __main__.py mask [-h] --video VIDEO --mask MASK --batch_size BATCH_SIZE
 [-d DEVICE]
 
