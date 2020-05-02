@@ -41,7 +41,8 @@ LINES = [
 class FaceVisualizer:
     @staticmethod
     def visualize(
-        video: str, annotations: str, save: str, size: Tuple[int, int]
+        video: str, annotations: str, 
+        save: str = None, size: Tuple[int, int] = None
     ) -> None:
         """Visualize
 
@@ -105,6 +106,6 @@ class FaceVisualizer:
         clip.preview()
 
         # Save to GIF if Asked
-        if save is not None:
+        if save is not None and size is not None:
             clip = clip.resize(width=size[0], height=size[1])
             clip.write_gif(save, fps=15)
