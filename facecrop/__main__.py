@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """facecrop.__main__"""
 from facecrop.annotator import FaceAnnotator
+from facecrop.masker import BackgroundMasker
 from facecrop.visualizer import FaceVisualizer
 from typing import Tuple
 
@@ -69,6 +70,25 @@ visualize.add_argument(
     help="resize the video to save gif"
 )
 
+# Define Masker Command Arguments
+mask = sub_parsers.add_parser("mask")
+mask.add_argument(
+    "--video", type=str, required=True,
+    help="video path to be masked (mp4 by preference `video.mp4`)"
+)
+mask.add_argument(
+    "--mask", type=str, required=True,
+    help="mask video output path (mp4 by preference `mask.mp4`)"
+)
+mask.add_argument(
+    "--batch_size", type=int, required=True,
+    help="batch_size for the segmentation model"
+)
+mask.add_argument(
+    "-d", "--device", type=str, default="cpu",
+    help="device to run the segmentation model on, `cpu` or `cuda`"
+)
+
 # Parse and Process Commands
 args = parser.parse_args()
 if args.action == "annotate":
@@ -85,3 +105,7 @@ elif args.action == "visualize":
     FaceVisualizer.visualize(
         args.video, args.annotations, save=args.save, size=args.size
     )
+
+elif args.action == "mask":
+    bckg_masker = BackgroundMasker(args.batch_size, args.device)
+    bckg_masker(args.video, args.mask)

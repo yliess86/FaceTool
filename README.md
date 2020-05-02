@@ -12,7 +12,7 @@
 >
 > This tool has been built to **meet the needs I have at the moment** of creating it for other and more complex projects. FaceCrop is meant to be used with single person videos exclusively. It **isn't perfect** and **will be updated as needed**.
 
-**FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region** and **landmarks** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
+**FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks** and **segmentation mask** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
 
 <p align="center">
   <img width="640" height="360" src="joma.gif"></img>
@@ -33,7 +33,7 @@ $ (sudo) python3 setup.py install
 
 ## Usage
 
-After installation, the **FaceCrop** can perform two actions: **Create** annotation **CSV** file for a given video and **Visualize** annotation for a given video and its annotation file.
+After installation, the **FaceCrop** can perform three actions: **Create annotation CSV** file for a given video, **Visualize** annotation for a given video and its annotation file, and produce **Human Masking** as an **MP4** clip.
 
 > #### Tips
 >
@@ -67,7 +67,6 @@ The **annotation file** is in `CSV` format and is meant to be loaded with the **
 
 The **naming convention** is explicit. `frame_idx` corresponds to the frame id in the video. `box_x`, `box_y`, `box_w`, `box_h` correspond to the face detection **2D box** coordinates and size. And `landmark_i_x`, `landmark_i_y` correspond to the `ith` (68 in total) facial regressed **2D landmarks** coordinates.
 
-
 ### Visualization
 
 The **visualization** command is in the following format:
@@ -86,6 +85,39 @@ optional arguments:
 ```
 
 The visualization will **display the processed frames** as the example displayed at the top of this page shows. If you decide to **save** the result into a `GIF`, it will produce one with `15 FPS`. Be careful to used small videos for this usage as the visualization is not optimized to load the video frames in batches compared to the rest of the library. It makes sense as `GIF` needs to be small.
+
+## Segmentation
+
+The **segmentation** command is in the following format:
+```bash
+$ python3 -m facecrop mask --help
+usage: __main__.py mask [-h] --video VIDEO --mask MASK --batch_size BATCH_SIZE
+[-d DEVICE]
+
+optional arguments:
+  -h, --help                  show this help message and exit
+  --video VIDEO               video path to be masked (mp4 by preference `video.mp4`)
+  --mask MASK                 mask video output path (mp4 by preference `mask.mp4`)
+  --batch_size BATCH_SIZE     batch_size for the segmentation model
+  -d DEVICE, --device DEVICE  device to run the segmentation model on, `cpu` or `cuda`
+```
+
+The segmentation outputs an `MP4` **black and white** clip of the resulting masks. **White** represents the **person** and **black** the **background**. The resulting clip can later be used to crop the entire person out of the video. The masks are **not perfect** but can be usefull for certain usage. **Gaussian Blur** is used to blur the **edges**.
+
+<p align="center">
+  <img width="155" height="72.5" src="joma.gif"></img>
+  <img width="155" height="72.5" src="maskedjoma.gif"></img>
+  <img width="155" height="72.5" src="maskjoma.gif"></img>
+</p>
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=uxRf7KS3abo">
+        Orignal Video
+    </a>
+</p>
+
+> #### Disclaimer
+>
+> The produced mask video does not include landmarks and box annoations as shown in the examples above. The corresponsing mask video is the black and white only.
 
 ## References
 

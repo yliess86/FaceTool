@@ -67,9 +67,10 @@ setup(
     install_requires=requirements,
     packages=find_packages(),
     include_package_data=True,
-    data_files=[(
-        os.path.join(sys.prefix, "facecrop", "model"), [dat_file]
-    )],
+    data_files=[
+        (os.path.join(sys.prefix, "facecrop", "model"), [dat_file])
+        (os.path.join(sys.prefix, "facecrop", "model"), ["masknet.pt"])
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
