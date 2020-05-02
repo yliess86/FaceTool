@@ -65,7 +65,7 @@ The **annotation file** is in `CSV` format and is meant to be loaded with the **
 |frame_idx|box_x|box_y|box_w|box_h|landmark_1_x|landmark_1_y|...|landmark_68_x|landmark_68_y|
 |--------:|----:|----:|----:|----:|-----------:|-----------:|:-:|------------:|------------:|
 
-The **naming convention** is explicit. `frame_idx` corresponds to the frame id in the video. `box_x`, `box_y`, `box_w`, `box_h` corresponds to the face detection **2D box** coordinates and size. And `landmark_i_x`, `landmark_i_y` correspond to the `ith` (68 in total) facial regressed **2D landmarks** coordinates.
+The **naming convention** is explicit. `frame_idx` corresponds to the frame id in the video. `box_x`, `box_y`, `box_w`, `box_h` correspond to the face detection **2D box** coordinates and size. And `landmark_i_x`, `landmark_i_y` correspond to the `ith` (68 in total) facial regressed **2D landmarks** coordinates.
 
 
 ### Visualization
@@ -85,7 +85,7 @@ optional arguments:
   --size SIZE SIZE           resize the video to save gif
 ```
 
-The visualization will **display the processed frames** as the example displayed at the top of this page shows. If you decide to **save** the result into a `GIF`, it will produce one with `25 FPS`. Be careful to used small videos for this usage as the visualization is not optimized to load the video frames in batches compared to the rest of the library. It makes sense as `GIF` needs to be small.
+The visualization will **display the processed frames** as the example displayed at the top of this page shows. If you decide to **save** the result into a `GIF`, it will produce one with `15 FPS`. Be careful to used small videos for this usage as the visualization is not optimized to load the video frames in batches compared to the rest of the library. It makes sense as `GIF` needs to be small.
 
 ## References
 
