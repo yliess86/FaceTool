@@ -144,4 +144,5 @@ cython_debug/
 # Data and Model
 *.mp4
 *.csv
-facecrop/model
+*.bz2
+*.dat
