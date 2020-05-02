@@ -6,13 +6,13 @@
 
 ![Logo](logo.png)
 
-**FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region** and **landmarks** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
-
 > #### Disclaimer
 >
 > This tool is **not meant** to be used for **real-time** landmark and face detection. Other tools such as OpenPose, OpenCV, and optimized Dlib already allow you to do so.
 >
 > This tool has been built to **meet the needs I have at the moment** of creating it for other and more complex projects. FaceCrop is meant to be used with single person videos exclusively. It **isn't perfect** and **will be updated as needed**.
+
+**FaceCrop** is a **Python** tool for face cropped videos. It allows you to infer face **region** and **landmarks** from **single person videos**. FaceCrop has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
 
 <p align="center">
   <img width="640" height="360" src="joma.gif"></img>
@@ -98,3 +98,9 @@ optional arguments:
 ```
 
 The visualization will **display the processed frames** as the example displayed at the top of this page shows. If you decide to **save** the result into a `GIF`, it will produce one with `25 FPS`. Be careful to used small videos for this usage as the visualization is not optimized to load the video frames in batches compared to the rest of the library. It makes sense as `GIF` needs to be small.
+
+## References
+
+> [MTCNN](https://arxiv.org/abs/1604.02878) - Kaipeng Zhang, Zhanpeng Zhang, Zhifeng Li, Yu Qiao, "Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks", IEEE Signal Processing Letters 2016 - [Code](https://github.com/timesler/facenet-pytorch)
+
+> [Dlib](http://dlib.net/) - Davis E. King, "Dlib-ml: A Machine Learning Toolkit", Journal of Machine Learning Research 2009 - [Code](https://github.com/davisking/dlib)
