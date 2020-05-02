@@ -10,13 +10,11 @@ from itertools import islice
 from multiprocessing.pool import ThreadPool
 from tqdm import tqdm
 from typing import Tuple
-from urllib import request
 
-import bz2
 import dlib
 import moviepy.editor as mpe
 import numpy as np
-import os
+import pkg_resources as pr
 
 
 class FaceLandmarker:
@@ -41,37 +39,10 @@ class FaceLandmarker:
 
     @property
     def _predictor(self) -> str:
-        """Donwload and return dlib Predictor Weights File Path"""
-        # Define Bases for path and url
-        base = "http://dlib.net/files"
-        current = os.path.abspath(__file__)
-        parent = os.path.dirname(current)
-        root = os.path.join(parent, "model")
-
-        # Define file names
-        bz2_file = "shape_predictor_68_face_landmarks.dat.bz2"
-        dat_file = "shape_predictor_68_face_landmarks.dat"
-        
-        # Define file paths and url
-        url = f"{base}/{bz2_file}"
-        bz2_path = f"{root}/{bz2_file}"
-        dat_path = f"{root}/{dat_file}"
-
-        if not os.path.isfile(dat_path):
-            os.makedirs(root, exist_ok=True)
-
-            # Read Compressed file
-            request.urlretrieve(url, bz2_path)
-            with open(bz2_path, "rb") as fh:
-                compressed = fh.read()
-                decompressed = bz2.decompress(compressed)
-            os.remove(bz2_path)
-            
-            # Write Uncompressed file
-            with open(dat_path, "wb") as fh:
-                fh.write(decompressed)
-
-        return dat_path
+        """Dlib Predictor Weights File Path"""
+        return pr.resource_filename(
+            "facecrop", "model/shape_predictor_68_face_landmarks.dat"
+        )
 
 
     def __call__(self, path: str, boxes: np.ndarray) -> np.ndarray:

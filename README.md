@@ -25,22 +25,10 @@
 
 ## Install
 
-The installation is pretty straightforward. All you need is a **Python3** environment with **Pip** installed. The library can then be used on its own by installing it on the system or by using it locally.
-
-### System Install
-
-**System install** is done by calling the following command *(may require sudo)*:
+The installation is pretty straightforward. All you need is a **Python3** environment with **Pip** installed. **Installation** is done by calling the following command *(may require sudo)*:
 
 ```bash
 $ (sudo) python3 setup.py install
-```
-
-### Local Usage
-
-To use the library without installation on the system, it is mandatory to at least **install the libraries** required and listed in the `requirements.txt` file. You can do that by calling the following command *(may require sudo)*:
-
-```bash
-$ (sudo) pip3 install -r requirements.txt
 ```
 
 ## Usage
