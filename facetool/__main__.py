@@ -4,16 +4,9 @@ from facetool.annotator import FaceAnnotator
 from facetool.masker import BackgroundMasker
 from facetool.visualizer import FaceVisualizer
 from typing import Tuple
+from typing import List
 
 import argparse
-
-
-def size(s: str) -> Tuple[int, int]:
-    """Convert string argument to size Tuple"""
-    elements = s.split(",")
-    if len(elements) != 2:
-        raise argparse.ArgumentTypeError("Should contain 2 ints `320, 155`")
-    return tuple(map(int, elements[:2]))
 
 
 # Define Command Parser
@@ -43,7 +36,7 @@ annotate.add_argument(
     help="number of threads used for lanrmarking"
 )
 annotate.add_argument(
-    "--size", type=size, default="320, 155", nargs=2,
+    "--size", type=int, default=[320, 155], nargs=2, action="store",
     help="resize the video for the detector"
 )
 annotate.add_argument(
@@ -66,7 +59,7 @@ visualize.add_argument(
     help="visualization saving path (gif `visualization.gif`)"
 )
 visualize.add_argument(
-    "--size", type=size, default="640, 360", nargs=2,
+    "--size", type=int, default=[640, 360], nargs=2, action="store",
     help="resize the video to save gif"
 )
 
