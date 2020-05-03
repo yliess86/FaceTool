@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/yliess86/FaceTool/blob/master/LICENSE)
-[![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.6+](https://img.shields.io/badge/python-3.6+-green.svg)](https://www.python.org/downloads/release/python-360/)
 [![Pytorch 1.4](https://img.shields.io/badge/pytorch-1.4.0-blue.svg)](https://pytorch.org/)
 
 # FaceTool: a Tool for Single Face Videos
@@ -37,7 +37,7 @@ After installation, the **FaceTool** can perform three actions: **Create annotat
 
 > #### Tips
 >
-> The speed of processing will highly **benefit** from using an enable **Nvidia GPU** with **Cuda** and **CudNN** support installed. Make sure the number of batches can fit into your device's memory.
+> The speed of processing will highly **benefit** from using an enabled **Nvidia GPU** with **Cuda** and **CudNN** support installed. Make sure the number of batches can fit into your device's memory.
 
 ### Annotation
 
@@ -124,3 +124,5 @@ The segmentation outputs an `MP4` **black and white** clip of the resulting mask
 > [MTCNN](https://arxiv.org/abs/1604.02878) - Kaipeng Zhang, Zhanpeng Zhang, Zhifeng Li, Yu Qiao, "Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks", IEEE Signal Processing Letters 2016 - [Code](https://github.com/timesler/facenet-pytorch)
 
 > [Dlib](http://dlib.net/) - Davis E. King, "Dlib-ml: A Machine Learning Toolkit", Journal of Machine Learning Research 2009 - [Code](https://github.com/davisking/dlib)
+
+> [UNet](https://arxiv.org/pdf/1505.04597.pdf) - Olaf Ronneberger, Philipp Fischer, Thomas Brox, "U-Net: Convolutional Networks for Biomedical Image Segmentation", MICCAI 2015 - [Code](https://github.com/thuyngch/Human-Segmentation-PyTorch)
