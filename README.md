@@ -15,7 +15,7 @@
 **FaceTool** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks** and **segmentation mask** from **single person videos**. FaceTool has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
 
 <p align="center">
-  <img width="640" height="360" src="joma.gif"></img>
+  <img style="max-width: 640px;" src="joma.gif"></img>
 </p>
 <p align="center">
     <a href="https://www.youtube.com/watch?v=uxRf7KS3abo">
@@ -105,9 +105,9 @@ optional arguments:
 The segmentation outputs an `MP4` **black and white** clip of the resulting masks. **White** represents the **person** and **black** the **background**. The resulting clip can later be used to crop the entire person out of the video. The masks are **not perfect** but can be usefull for certain usage. **Gaussian Blur** is used to blur the **edges**.
 
 <p align="center">
-  <img width="155" height="72.5" src="joma.gif"></img>
-  <img width="155" height="72.5" src="maskedjoma.gif"></img>
-  <img width="155" height="72.5" src="maskjoma.gif"></img>
+  <img style="max-width: 155px;" src="joma.gif"></img>
+  <img style="max-width: 155px;" src="maskedjoma.gif"></img>
+  <img style="max-width: 155px;" src="maskjoma.gif"></img>
 </p>
 <p align="center">
     <a href="https://www.youtube.com/watch?v=uxRf7KS3abo">
