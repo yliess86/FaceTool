@@ -67,7 +67,7 @@ class FaceDetector:
         frame_iter = video.iter_frames()
 
         # Get Number of Frame and Scale
-        n_frames = int(np.floor(video.fps * video.duration))
+        n_frames = int(np.round(video.fps * video.duration))
         scale = video.w / self.size[0], video.h / self.size[1]
 
         results = []

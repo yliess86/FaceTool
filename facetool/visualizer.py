@@ -56,7 +56,7 @@ class FaceVisualizer:
         annotations = pd.read_csv(annotations)
 
         # Gather Frames
-        n_frames = int(np.floor(video.fps * video.duration))
+        n_frames = int(np.round(video.fps * video.duration))
         frames = video.iter_frames()
         frames = list(tqdm(frames, desc="Loading Frames", total=n_frames))
         
