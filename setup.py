@@ -14,7 +14,7 @@ def shape_predictor() -> str:
     """Donwload and return dlib Predictor Weights File Path"""
     # Define Bases for path and url
     base = "http://dlib.net/files"
-    root = os.path.join("facecrop", "model")
+    root = os.path.join("facetool", "model")
 
     # Define file names
     bz2_file = "shape_predictor_68_face_landmarks.dat.bz2"
@@ -43,6 +43,7 @@ def shape_predictor() -> str:
 
 
 dat_file = shape_predictor()
+masknet = os.path.join("facetool", "model", "masknet.pt")
 
 desciption = ( 
     f"FaceTool: a Tool for Single Face Videos"
@@ -68,8 +69,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     data_files=[
-        (os.path.join(sys.prefix, "facetool", "model"), [dat_file])
-        (os.path.join(sys.prefix, "facetool", "model"), ["masknet.pt"])
+        (os.path.join(sys.prefix, "facetool", "model"), [dat_file]),
+        (os.path.join(sys.prefix, "facetool", "model"), [masknet])
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
