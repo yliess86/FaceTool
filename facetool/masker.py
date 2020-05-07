@@ -109,7 +109,7 @@ class BackgroundMasker:
         """Generate Mask for a given Video and Produce a Mask mp4 Clip"""
         video = mpe.VideoFileClip(path)
         video_frames = video.iter_frames()
-        n_frames = int(np.round(video.fps * video.duration))
+        n_frames = int(np.floor(video.fps * video.duration))
 
         # Generator to Process Frames
         def generator() -> Iterator[np.ndarray]:

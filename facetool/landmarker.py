@@ -63,7 +63,7 @@ class FaceLandmarker:
         frame_iter = video.iter_frames()
 
         # Get Number of Frame
-        n_frames = int(np.round(video.fps * video.duration))
+        n_frames = int(np.floor(video.fps * video.duration))
         
         results = []
         iterator = range(0, n_frames, self.batch_size)
