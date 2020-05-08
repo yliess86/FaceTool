@@ -238,8 +238,3 @@ class XDoGer:
         y = y.cpu().numpy().astype(np.uint8)
         
         return y
-
-
-if __name__ == "__main__":
-    xdoger = XDoGer(32, "cuda")
-    xdoger("joma.mp4", "countour.mp4")

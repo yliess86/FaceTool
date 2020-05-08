@@ -12,7 +12,7 @@
 >
 > This tool has been built to **meet the needs I have at the moment** of creating it for other and more complex projects. FaceTool is meant to be used with single person videos exclusively. It **isn't perfect** and **will be updated as needed**.
 
-**FaceTool** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks** and **segmentation mask** from **single person videos**. FaceTool has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
+**FaceTool** is a **Python** tool for face cropped videos. It allows you to infer face **region**, **landmarks**, **segmentation mask** and **ink like contours** from **single person videos**. FaceTool has been implemented with **batch inference** in mind allowing to treat the videos faster. It can be used to generate a dataset for training Deep Learning models and such.
 
 <p align="center">
   <img width=640 src="joma.gif"></img>
@@ -33,7 +33,7 @@ $ (sudo) python3 setup.py install
 
 ## Usage
 
-After installation, the **FaceTool** can perform three actions: **Create annotation CSV** file for a given video, **Visualize** annotation for a given video and its annotation file, and produce **Human Masking** as an **MP4** clip.
+After installation, the **FaceTool** can perform four actions: **Create annotation CSV** file for a given video, **Visualize** annotation for a given video and its annotation file, produce **Human Masking** as an **MP4** clip, and also **Ink like Contouring** as an **MP4** clip.
 
 > #### Tips
 >
@@ -119,6 +119,34 @@ The segmentation outputs an `MP4` **black and white** clip of the resulting mask
 >
 > The produced mask video does not include landmarks and box annoations as shown in the examples above. The corresponsing mask video is the black and white only.
 
+## Contour
+
+The **contour** command is in the following format:
+```bash
+$ python3 -m facetool xdog --help
+usage: __main__.py xdog [-h] --video VIDEO --contour CONTOUR --batch_size BATCH_SIZE
+[-d DEVICE] [--sigma1 SIGMA1] [--sigma2 SIGMA2] [--sharpen SHARPEN] [--phi PHI] [--eps EPS]
+
+optional arguments:
+  -h, --help                  show this help message and exit
+  --video VIDEO               video path to be contoured (mp4 by preference `video.mp4`)
+  --contour CONTOUR           contour video output path (mp4 by preference `contour.mp4`)
+  --batch_size BATCH_SIZE     batch_size for the segmentation model
+  -d DEVICE, --device DEVICE  device to run the segmentation model on, `cpu` or `cuda`
+  --sigma1 SIGMA1             sigma of the first gaussian blur filter
+  --sigma2 SIGMA2             sigma of the second gaussian blur filter
+  --sharpen SHARPEN           sharpens the gaussians before computing difference
+  --phi PHI                   phi parameter for soft thresholding
+  --eps EPS                   epsilon parameter for soft thresholding
+
+```
+
+The contour outputs an `MP4` **black and white** clip of the resulting contour. Ink lines ar represented in **Black**. The result is obtain using **xDoG** (eXtended Difference of Gaussians) with **default parameters** provided in the command. Parameters can be adjusted to obtain different results.
+
+<p align="center">
+    <img width="640" src="contour.gif"></img>
+</p>
+
 ## References
 
 > [MTCNN](https://arxiv.org/abs/1604.02878) - Kaipeng Zhang, Zhanpeng Zhang, Zhifeng Li, Yu Qiao, "Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks", IEEE Signal Processing Letters 2016 - [Code](https://github.com/timesler/facenet-pytorch)
@@ -126,3 +154,5 @@ The segmentation outputs an `MP4` **black and white** clip of the resulting mask
 > [Dlib](http://dlib.net/) - Davis E. King, "Dlib-ml: A Machine Learning Toolkit", Journal of Machine Learning Research 2009 - [Code](https://github.com/davisking/dlib)
 
 > [UNet](https://arxiv.org/pdf/1505.04597.pdf) - Olaf Ronneberger, Philipp Fischer, Thomas Brox, "U-Net: Convolutional Networks for Biomedical Image Segmentation", MICCAI 2015 - [Code](https://github.com/thuyngch/Human-Segmentation-PyTorch)
+
+> [xDoG](https://www.kyprianidis.com/p/cag2012/winnemoeller-cag2012.pdf) - Holger Winnemoller, Jan Eric Kyprianidisb, Sven C. Olsen, "XDoG: An eXtended Difference-of-Gaussians Compendium Including Advanced Image Stylization",  Computers & Graphics, Vol. 36, Issue 6, 2012, pp. 720–753 - [Code](https://github.com/alexpeattie/xdog-sketch)

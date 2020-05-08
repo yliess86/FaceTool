@@ -5,3 +5,4 @@ from facetool.detector import FaceDetector
 from facetool.landmarker import FaceLandmarker
 from facetool.masker import BackgroundMasker
 from facetool.visualizer import FaceVisualizer
+from facetool.xdoger import XDoGer

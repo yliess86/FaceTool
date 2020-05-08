@@ -3,6 +3,7 @@
 from facetool.annotator import FaceAnnotator
 from facetool.masker import BackgroundMasker
 from facetool.visualizer import FaceVisualizer
+from facetool.xdoger import XDoGer
 from typing import Tuple
 from typing import List
 
@@ -82,6 +83,45 @@ mask.add_argument(
     help="device to run the segmentation model on, `cpu` or `cuda`"
 )
 
+# Define xDoG Command Arguments
+xdog = sub_parsers.add_parser("xdog")
+xdog.add_argument(
+    "--video", type=str, required=True,
+    help="video path to be contoured (mp4 by preference `video.mp4`)"
+)
+xdog.add_argument(
+    "--contour", type=str, required=True,
+    help="contour video output path (mp4 by preference `contour.mp4`)"
+)
+xdog.add_argument(
+    "--batch_size", type=int, required=True,
+    help="batch_size for the segmentation model"
+)
+xdog.add_argument(
+    "-d", "--device", type=str, default="cpu",
+    help="device to run the segmentation model on, `cpu` or `cuda`"
+)
+xdog.add_argument(
+    "--sigma1", type=float, default=1.8,
+    help="sigma of the first gaussian blur filter"
+)
+xdog.add_argument(
+    "--sigma2", type=float, default=2.5,
+    help="sigma of the second gaussian blur filter"
+)
+xdog.add_argument(
+    "--sharpen", type=float, default=28.0,
+    help="sharpens the gaussians before computing difference"
+)
+xdog.add_argument(
+    "--phi", type=float, default=1.051,
+    help="phi parameter for soft thresholding"
+)
+xdog.add_argument(
+    "--eps", type=float, default=10.7,
+    help="epsilon parameter for soft thresholding"
+)
+
 # Parse and Process Commands
 args = parser.parse_args()
 if args.action == "annotate":
@@ -102,3 +142,11 @@ elif args.action == "visualize":
 elif args.action == "mask":
     bckg_masker = BackgroundMasker(args.batch_size, args.device)
     bckg_masker(args.video, args.mask)
+
+elif args.action == "xdog":
+    xdoger = XDoGer(
+        args.batch_size, args.device,
+        args.sigma1, args.sigma2,
+        args.sharpen, args.phi, args.eps
+    )
+    xdoger(args.video, args.contour)
