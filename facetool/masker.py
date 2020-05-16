@@ -10,6 +10,7 @@ and has been JIT traced from the following repository:
 
 The segmentation is not perfect but enough for its purpose here.
 """
+from facetool.utils import GaussianFilter
 from itertools import chain
 from itertools import islice
 from PIL import Image
@@ -30,51 +31,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class GuassianBlur(nn.Module):
-    """GuassianBlur
-
-    GaussianBlur by Gaussian Kernel 2D Convolution.
-    The implementation is a straight implementation of the solution provided
-    by Tetratrio from the pytorch forums at the following address:
-        https://discuss.pytorch.org/t/
-        is-there-anyway-to-do-gaussian-filtering-for-an-image-2d-3d-in-pytorch/
-        12351/3
-
-    Arguments:
-        kernel_size {int} -- size of the gaussian kernel
-        sigma {float} -- sigma of the guassian pdf
-        channels {int} -- number of channels of the input image
-    """
-    
-    def __init__(self, kernel_size: int, sigma: float, channels: int) -> None:
-        super(GuassianBlur, self).__init__()
-        self.kernel_size = kernel_size
-        self.sigma = sigma
-        self.channels = channels
-        
-        x_coord = torch.arange(kernel_size)
-        x_grid = x_coord.repeat(kernel_size).view(kernel_size, kernel_size)
-        y_grid = x_grid.t()
-        xy_grid = torch.stack([x_grid, y_grid], dim=-1)
-
-        mean = (kernel_size - 1.0) * 0.5
-        variance = sigma ** 2
-
-        c1 = 1.0 / (2.0 * np.pi * variance)
-        c2 = 2.0 * variance
-        kernel = c1 * torch.exp(-torch.sum((xy_grid - mean) ** 2, dim=-1) / c2)
-        kernel = kernel / torch.sum(kernel)
-
-        kernel = kernel.view(1, 1, kernel_size, kernel_size)
-        kernel = kernel.repeat(channels, 1, 1, 1)
-        
-        self.kernel = nn.Parameter(kernel, requires_grad=True)
-
-    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
-        """Apply Gaussian Blur to the given inputs"""
-        return F.conv2d(inputs, self.kernel, groups=self.channels)
-
-
 class BackgroundMasker:
     """Background Masker
 
@@ -92,7 +48,7 @@ class BackgroundMasker:
         self.batch_size = batch_size
         self.device = device
         self.model = torch.jit.load(self._model).to(device)
-        self.blur = GuassianBlur(10, 2.0, 2).to(device)
+        self.blur = GaussianFilter(2.0).to(device)
         self.transform = Compose([
             lambda x: Image.fromarray(x),
             Resize((224, 224)),

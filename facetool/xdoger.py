@@ -7,6 +7,7 @@ allow to compute drawing like countours of the subject present in the frames.
     * Paper: https://www.kyprianidis.com/p/cag2012/winnemoeller-cag2012.pdf
     * Code: https://github.com/alexpeattie/xdog-sketch
 """
+from facetool.utils import GaussianFilter
 from itertools import islice
 from torchvision.transforms import ToTensor
 from tqdm import tqdm
@@ -47,53 +48,6 @@ class GrayScale(nn.Module):
         out += inputs[:, 1] * self.g
         out += inputs[:, 2] * self.b
         return out.unsqueeze(1)
-
-
-class GaussianFilter(nn.Module):
-    """Gaussian Filter
-
-    GaussianFilter applies Gaussian Blur with 2D conv gaussian kernel.
-    @TODO: Should be merged with masker Gaussian Blur at some point
-
-    Arguments:
-        sigma {float} -- sigma of the gaussian filter (filter size will 
-            automaticaly be computed based on this value)
-    """
-
-    def __init__(self, sigma: float) -> None:
-        super(GaussianFilter, self).__init__()
-        self.kernel_size = int(max(np.round(sigma * 3) * 2 + 1, 3))
-        self.sigma = sigma
-
-        kernel_x = self._kernel(self.kernel_size, self.sigma)
-        kernel_y = self._kernel(self.kernel_size, self.sigma)
-        kernel = kernel_x.unsqueeze(-1) @ kernel_y.unsqueeze(-1).t()
-        kernel = kernel.view(1, 1, self.kernel_size, self.kernel_size)
-
-        self.kernel = nn.Parameter(kernel, requires_grad=False)
-        self.padding = [(self.kernel_size - 1) // 2] * 2
-
-    def _kernel(self, kernel_size: int, sigma: float) -> torch.Tensor:
-        """Compute Kenerl Size based on Sigma Value"""
-        gauss = lambda x: -(x - kernel_size // 2) ** 2 / (2 * sigma ** 2)
-        kernel = torch.stack([
-            torch.exp(torch.tensor(gauss(x))) for x in range(kernel_size)
-        ])
-        kernel = kernel / kernel.sum()
-        return kernel
-
-    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
-        """Forward
-
-        Arguments:
-            inputs {torch.Tensor} -- batch of images tensors
-
-        Returns:
-            torch.Tensor -- batch of blurred images tensors
-        """
-        b, c, h, w = inputs.size()
-        params = { "padding": self.padding, "stride": 1, "groups": c }
-        return F.conv2d(inputs, self.kernel, **params)
 
 
 class XDoG(nn.Module):
